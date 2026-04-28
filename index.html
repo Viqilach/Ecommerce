@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LUMA — Aromaterapia Artesanal</title>
+
+  <!-- Fuentes de Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos -->
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+  <!-- ===== HEADER ===== -->
+  <header>
+    <div class="header-inner">
+
+      <div class="logo">L<span>U</span>MA</div>
+
+      <!-- Navegación escritorio: oculta en móvil con CSS -->
+      <nav id="navDesktop">
+        <a href="#tienda">Tienda</a>
+        <div class="nav-dropdown" id="navDropdown">
+          <button class="nav-dropdown-btn" id="btnColecciones">
+            Colecciones <span class="dropdown-arrow">&#9660;</span>
+          </button>
+          <div class="dropdown-menu" id="dropdownMenu">
+            <button class="dropdown-item" data-cat="velas">Velas</button>
+            <button class="dropdown-item" data-cat="difusores">Difusores</button>
+            <button class="dropdown-item" data-cat="incienso">Incienso</button>
+            <button class="dropdown-item" data-cat="kits">Kits regalo</button>
+          </div>
+        </div>
+        <button class="nav-btn" id="btnNosotras">Nosotras</button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn-session" id="btnSession">Iniciar sesión</button>
+        <button class="btn-cart" id="btnCart" aria-label="Carrito">
+          🛒
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <!-- Botón hamburguesa: solo visible en móvil -->
+        <button class="btn-hamburger" id="btnHamburger" aria-label="Menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Menú móvil desplegable (oculto por defecto) -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#tienda" class="mobile-link" id="mobileTienda">Tienda</a>
+      <div class="mobile-divider">Colecciones</div>
+      <button class="mobile-link" data-cat="velas">Velas</button>
+      <button class="mobile-link" data-cat="difusores">Difusores</button>
+      <button class="mobile-link" data-cat="incienso">Incienso</button>
+      <button class="mobile-link" data-cat="kits">Kits regalo</button>
+      <div class="mobile-divider"></div>
+      <button class="mobile-link" id="mobileNosotras">Nosotras</button>
+    </div>
+  </header>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero">
+    <p class="hero-eyebrow">Aromaterapia artesanal &middot; Hecho a mano</p>
+    <h1>Ilumina tu espacio,<br>calma tu mente</h1>
+    <p>Velas de soja pura, difusores y aromas naturales creados con intención y cuidado.</p>
+    <a href="#tienda" class="btn-primary">Explorar colección</a>
+  </section>
+
+  <!-- ===== TIENDA ===== -->
+  <section class="shop-section" id="tienda">
+
+    <div class="shop-header">
+      <h2 class="shop-title">Nuestra colección</h2>
+      <!-- Select de ordenación: JS usa su valor con Array.sort() -->
+      <select class="control-select" id="sortSelect">
+        <option value="default">Ordenar por</option>
+        <option value="asc">Precio: menor a mayor</option>
+        <option value="desc">Precio: mayor a menor</option>
+      </select>
+    </div>
+
+    <!-- Filtros por categoría: data-cat lo lee JS -->
+    <div class="filter-tabs" id="filterTabs">
+      <button class="filter-tab active" data-cat="todas">Todas</button>
+      <button class="filter-tab" data-cat="velas">Velas</button>
+      <button class="filter-tab" data-cat="difusores">Difusores</button>
+      <button class="filter-tab" data-cat="incienso">Incienso</button>
+      <button class="filter-tab" data-cat="kits">Kits regalo</button>
+    </div>
+
+    <!-- Grid vacío: JS genera las tarjetas aquí con innerHTML -->
+    <div class="products-grid" id="productsGrid"></div>
+
+  </section>
+
+  <!-- ===== PANEL CARRITO (oculto por defecto con CSS) ===== -->
+  <div class="cart-overlay" id="cartOverlay">
+    <div class="cart-panel">
+      <div class="cart-panel-header">
+        <h2>Tu carrito</h2>
+        <button class="btn-close" id="btnCloseCart">&#x2715;</button>
+      </div>
+      <!-- JS rellena aquí los productos del carrito -->
+      <div class="cart-items" id="cartItems"></div>
+      <!-- Resumen: oculto hasta que haya productos -->
+      <div class="cart-footer" id="cartFooter" style="display:none">
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <span id="subtotalVal">—</span>
+        </div>
+        <div class="cart-summary-row">
+          <span>Envío</span>
+          <!-- JS calcula: gratis desde 40€, si no 4,95€ -->
+          <span id="shippingVal">—</span>
+        </div>
+        <div class="cart-summary-row total">
+          <span>Total</span>
+          <span id="totalVal">—</span>
+        </div>
+        <button class="btn-checkout">Finalizar compra</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL SESIÓN (oculto por defecto con CSS) ===== -->
+  <div class="session-overlay" id="sessionOverlay">
+    <div class="session-modal">
+      <h2>Bienvenida de nuevo</h2>
+      <p>Inicia sesión para continuar</p>
+      <div class="form-field">
+        <label for="inputEmail">Correo electrónico</label>
+        <input type="email" id="inputEmail" placeholder="tu@email.com" />
+      </div>
+      <div class="form-field">
+        <label for="inputPass">Contraseña</label>
+        <input type="password" id="inputPass" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" />
+      </div>
+      <div class="session-actions">
+        <!-- JS guarda en sessionStorage al hacer clic -->
+        <button class="btn-login" id="btnLogin">Entrar</button>
+        <button class="btn-cancel" id="btnCancelSession">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL NOSOTRAS: historia de la marca (oculto por defecto con CSS) ===== -->
+  <div class="nosotras-overlay" id="nosotrasOverlay">
+    <div class="nosotras-modal">
+
+      <!-- Botón cerrar -->
+      <button class="btn-close nosotras-close" id="btnCloseNosotras">&#x2715;</button>
+
+      <div class="nosotras-img">
+        <img src="nosotras.png" alt="Taller artesanal LUMA" />
+      </div>
+
+      <div class="nosotras-content">
+        <p class="nosotras-eyebrow">Nuestra historia</p>
+        <h2>Nacimos de la calma</h2>
+        <p>
+          LUMA nació en 2021 en un pequeño taller de Sevilla, de las manos de una persona
+          que buscaba convertir momentos cotidianos en rituales de bienestar. Lo que empezó
+          como una afición — fundir cera de soja, mezclar aceites esenciales, buscar el
+          aroma perfecto — se convirtió en una pequeña marca con alma propia.
+        </p>
+        <p>
+          Cada vela, cada difusor, cada varilla de incienso se elabora a mano, en pequeñas
+          tandas, con ingredientes naturales y sin prisas. Creemos que la aromaterapia no
+          es un lujo, sino una forma sencilla de cuidarse cada día.
+        </p>
+        <p class="nosotras-quote">
+          "Un aroma puede cambiar cómo se siente una habitación, y cómo te sientes tú dentro de ella."
+        </p>
+        <div class="nosotras-valores">
+          <div class="valor">
+            <span>🌱</span>
+            <strong>Natural</strong>
+            <small>Ingredientes 100% naturales</small>
+          </div>
+          <div class="valor">
+            <span>🤲</span>
+            <strong>Artesanal</strong>
+            <small>Hecho a mano, con cuidado</small>
+          </div>
+          <div class="valor">
+            <span>♻️</span>
+            <strong>Sostenible</strong>
+            <small>Packaging reciclable</small>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast de notificaciones -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <p>&copy; 2026 LUMA &mdash; Aromaterapia Artesanal &nbsp;&middot;&nbsp; Hecho con amor</p>
+  </footer>
+  
+  <script src="script.js"></script>
+
+</body>
+</html>
