@@ -16,6 +16,7 @@ El ecommerce funciona tanto en móvil como en escritorio.
 - 🔃 Ordenar de menor a mayor precio
 - 🔐 Simulación de sesión de usuario 
 - 🌿 Modal "Nosotras" con la historia de la marca
+- 📦 Dropdown de colecciones en el menú de navegación
 
 ---
 
